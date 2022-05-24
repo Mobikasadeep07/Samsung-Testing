@@ -1,0 +1,184 @@
+.search_model_number input.search-input-bx, .select_your_product select {
+/* height:56px; */
+
+}
+/*  */
+.right-desc ul li b{
+    padding-right: 41px;
+    min-width: 154px;
+    display: inline-block;
+}
+/*  */
+
+/*  return & exchange*/
+.rte h3{
+font-family: 'Samsung Sharp Sans';
+    font-weight: 700;
+    font-size: 24px;
+
+}
+.rte h4{
+font-family: 'Samsung Sharp Sans';
+    font-weight: 700;
+    font-size: 24px;
+
+}
+/* return & exchange */
+
+
+/* generic content */
+.generic-content .heading{
+    top: 159px;
+    left: 400px;
+/*     width: 449px; */
+    height: 63px;
+    text-align: left;
+    font: normal normal bold 48px/68px Samsung Sharp Sans;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+    margin-top: 16px;
+    margin-bottom: 42px;
+}
+
+
+.generic-content .sub-heading{
+  top: 264px;
+  left: 400px;
+  /* width: 202px; */
+  line-height: 46px;
+  text-align: left;
+  font: normal normal bold 32px/46px Samsung Sharp Sans;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  margin-top: 0px;
+  margin-bottom: 6px;
+}
+
+.generic-content .sub-heading1{
+    font-family: 'SamsungOne 700';
+    line-height: 32px;
+    text-align: left;
+    letter-spacing: 0;
+    color: #000;
+    opacity: 1;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 0px;
+    margin-bottom: 34px;
+}
+
+/*  generic content*/
+
+
+@media only screen and (max-width: 480px){
+  
+  
+/*   generic content */
+  
+  .generic-content h1{
+ font-size:30px;
+}
+
+
+.generic-content h2{
+font-size:22px;
+}
+
+.generic-content h3{
+  font-size:18px;
+
+}
+  
+  
+  .generic-content p {
+            width: 306px;
+    font-size: 18px;
+    word-break: break-all;
+}
+/*    generic content*/
+.home-popular-parts .popular-part-main {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: initial;
+    grid-gap: 15px !important;
+  color:red;
+    grid-template-columns: auto auto auto;
+}
+/*  start find part section */
+  .search_model_number input.search-input-bx {
+    width: 100%;
+    border-radius: 20px;
+}
+/*   end find part section */
+  
+/*   search-fridge */
+  .right-desc ul li b{
+    display:none;
+}
+/*  search fridge  */
+  
+  .inline-block-mobile{ display:flex;}
+  
+/*  return & exchange  */
+  .page_return-exchange #xx{
+    font-size: 30px!important;
+}
+  .page_return-exchange h3{
+    font-family: 'Samsung Sharp Sans';
+    font-weight: 700;
+        font-size: 22px !important;
+  }
+  
+  .page_return-exchange h4{
+     font-size: 18px !important;
+  }
+/*   return & exchange */
+}
+@media only screen and (max-width: 768px){
+/* .shipping_items_list {
+    width: 100%;
+       display: inline !important;
+    margin-top: 0;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+} */
+  
+/*    generic content*/
+
+   .generic-content h1{
+ font-size:38px;
+}
+
+
+.generic-content h2{
+font-size:30px;
+}
+
+.generic-content h3{
+  font-size:20px;
+
+}
+/*generic content    */
+
+  .mobile-show{
+/*   display:none; */
+  }
+/*   return & exchange */
+  .page_return-exchange h1.main-page-title {
+    font-size: 38px !important;
+}
+  .page_return-exchange h3{
+    font-family: 'Samsung Sharp Sans';
+    font-weight: 700;
+    font-size: 30px;
+  }
+  
+  .page_return-exchange h4{
+      font-size: 20px;
+  }
+/*   return & exchange */
+}
