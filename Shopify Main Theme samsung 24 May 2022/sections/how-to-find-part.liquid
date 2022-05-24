@@ -1,0 +1,48 @@
+<section>
+  <a href="{{ section.settings.find_url }}">
+    <div class="hw_part_bg">    
+      <h3>{{ section.settings.find_txt }}</h3>         
+    </div>
+  </a>
+</section>
+
+<style>
+  .hw_part_bg {    
+  background: #1428a0 url({{ section.settings.image_icon | image_url }}) no-repeat; 
+    background-position: center right 70px;
+  }
+</style>
+{% schema %}
+
+{
+"name": "How To Find Part",
+"settings": [
+  {
+      "id": "image_icon",
+      "type": "image_picker",
+      "label": "Image Icon"
+      },
+ {
+      "id": "find_url",
+      "type": "url",
+      "label": "Main Url"
+      },
+ {
+      "id": "find_txt",
+      "type": "html",
+      "label": "Text"
+      }
+],
+"presets": [
+{
+"name": "How To Find Part"     
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

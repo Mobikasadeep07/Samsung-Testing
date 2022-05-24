@@ -1,0 +1,451 @@
+
+ <script src="{{ 'papaparse.js' | asset_url }}" ></script>
+  
+
+
+<style>
+
+  .left_find_part {      
+    background: #333 url({{ section.settings.image_icon | image_url }}) no-repeat;  
+    background-position: center right 20px;  
+  }
+
+  .left_find_part.government_sc {
+    background: #333 url({{ section.settings.image_icon_1 | image_url }}) no-repeat; 
+    background-position: center right 20px;
+  }
+  .accordion-menu--none{
+  display:none;
+  }
+ .accordion-menu__list a[data-accordion-menu] {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: auto;
+}
+  
+  /* bug-accordion-link-block */
+
+.icon-wid{
+    	height: 30px;
+     width:70px;
+/*   background-color:yellow; */
+}
+  
+  .wid{
+    height:25px;
+    width:50px;
+  }
+  
+  .accordion-menu__sublist span{
+   	margin-top: -10px; 
+  }
+  
+  .menu-mar{
+    margin: 0px 0px 0px 10px;}
+  
+</style>
+
+
+<div class="left_side_bar_menu teet"> 
+
+  <div class="accordion-menu-wrapper active" id="menu-parent" data-accordion-wrapper>
+    <nav role="navigation" class="accordion-menu">
+      <ul class="accordion-menu__list desk-nav">
+        {% for link in linklists.main-menu.links %}
+        <li class="accordion-menu__item">          
+          <a href="{{ link.url }}" class="accordion-menu__link ">{{ link.title }}</a>                   
+          <a href="#{{ link.handle }}" class="menu-mar" data-accordion-menu><span class="accordion-menu__icon menu-icon-1 icon-wid"></span></a>
+                   
+          {% if link.links.size > 0 %}
+          <ul class="accordion-menu__sublist accordion-menu--hidden menu-item-1" id="{{link.handle}}">
+            {% for child_link in link.links %}
+            <li class="">
+              <a href="{{ child_link.url }}" class="accordion-menu__sublink level-2-head">{{ child_link.title }}</a>             
+              <a href="#{{ child_link.handle }}" class="menu-mar" data-accordion-menu><span class="accordion-menu__icon menu-icon-2 wid"></span></a>            
+              {% if child_link.links.size > 0 %}
+              <ul class="accordion-menu__sublist accordion-menu--hidden menu-item-2 sub-menu-inner" id="{{child_link.handle}}">
+                {% for grandchild_link in child_link.links %}
+                <li>
+                  <a class="accordion-menu__sublink" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+
+<!--   <h2>Dynamic Nav </h2>
+
+   <div class="accordion-menu-wrapper active" id="menu-parent" data-accordion-wrapper>
+    <nav role="navigation" class="accordion-menu">
+      <ul class="accordion-menu__list desk-nav-custom">
+      </ul>
+    </nav>
+  </div> -->
+  
+  
+  <div class="left_find_part left_find">
+    <a href="{{ section.settings.text_link }}">
+      <div class="part_title">
+        <h4>{{ section.settings.txt }}</h4>
+      </div>
+    </a>
+  </div>
+
+  <div class="left_find_part government_sc">
+    <a href="{{ section.settings.text_link_one }}">
+      <div class="part_title">
+        <h4> {{ section.settings.txt_B2B }} </h4>
+      </div>
+    </a>
+  </div>
+
+  <div class="shipping_items_list">
+    {% for block in section.blocks %}
+    <div class="col">
+      <img src="{{ block.settings.col_img | img_url : ' master' }}" alt="">
+      <p>{{ block.settings.col_txt }}</p>    
+    </div>
+    {% endfor %}     
+  </div>
+
+  <script>
+
+    var accordionMenu = function () {
+
+      /**
+      * Element.closest() polyfill
+      * https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
+      */
+      if (!Element.prototype.closest) {
+        if (!Element.prototype.matches) {
+          Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+        }
+        Element.prototype.closest = function (s) {
+          var el = this;
+          var ancestor = this;
+          if (!document.documentElement.contains(el)) return null;
+          do {
+            if (ancestor.matches(s)) return ancestor;
+            ancestor = ancestor.parentElement;
+          } while (ancestor !== null);
+          return null;
+        };
+      }
+
+      // Listen for click on the document
+      // Accordiom menu functionality
+      document.addEventListener('click', function (event) {
+//              event.preventDefault();
+        // Bail if our clicked element doesn't match
+        var trigger = event.target.closest('[data-accordion-menu]');
+        if (!trigger) return;
+
+        // Get the target content
+        var target = document.querySelector(trigger.hash);
+        if (!target) return;
+
+        // Prevent default link behavior
+        event.preventDefault();
+
+        // Toggle our content
+        target.classList.toggle('accordion-menu--hidden');
+
+        // Toggle trigger class
+        trigger.classList.toggle('accordion-menu--active');
+      });
+
+      // Listen for click on the document
+      // Accordion parent menu functionality
+      document.addEventListener('click', function (event) {
+
+        // Bail if our clicked element doesn't match
+        var trigger = event.target.closest('[data-accordion-menu-nav]');
+        if (!trigger) return;
+
+        // Get the target content
+        var target = document.querySelector(trigger.hash);
+        if (!target) return;
+
+        // Prevent default link behavior
+        event.preventDefault();
+
+        // If the content is already expanded, collapse it and quit
+        if (target.classList.contains('active')) {
+          target.classList.remove('active');
+          return;
+        }
+
+        // Get all open accordion content, loop through it, and close it
+        var accordions = document.querySelectorAll('[data-accordion-wrapper]');
+        for (var i = 0; i < accordions.length; i++) {
+          accordions[i].classList.remove('active');
+        }
+
+        // Toggle our content
+        target.classList.toggle('active');
+      });
+
+    };
+
+    accordionMenu();    
+    
+    $( ".menu-icon-1" ).click(function(event) { 
+      event.preventDefault();
+      $(this).parents('.accordion-menu__item').siblings().find('.menu-item-1').addClass('accordion-menu--hidden');
+      $(this).parent('.accordion-menu__item').find('.menu-item-1').removeClass('accordion-menu--hidden');    
+      $(this).parents('.accordion-menu__item').siblings().find('[data-accordion-menu]').removeClass('accordion-menu--active');
+      $(this).parents('.accordion-menu__item').siblings().find('.menu-item-2').addClass('accordion-menu--hidden');
+      $(this).parent('.accordion-menu__item').find('[data-accordion-menu]').addClass('accordion-menu--active');                   
+    })
+        
+    $( ".menu-icon-2" ).click(function(event) {
+      event.preventDefault();
+      $(this).parents('li').siblings().find('.menu-item-2').addClass('accordion-menu--hidden');
+      $(this).parent('li').find('.menu-item-2').removeClass('accordion-menu--hidden');
+      $(this).parents('li').siblings().find('[data-accordion-menu]').removeClass('accordion-menu--active');
+      $(this).parent('li').find('[data-accordion-menu]').addClass('accordion-menu--active');     
+    })
+
+    
+  </script>
+  
+  
+  
+  
+<!--    <script>
+    
+      
+    function doStuff(data) {
+
+      var unique_mf = [];
+      var unique_cat = [];
+      
+     console.log(data);
+      
+      $.each(data, function(key,value) {
+//         console.log('Data- start: '+data[key]+'End');
+       
+//         console.log(key+' : '+value);
+//         console.log(data[key][1]);
+         var product_cat =  data[key][0];
+         var manufacturer =  data[key][1];
+       
+        
+//           console.log(manu_options);
+          var array_unique1 = data[key][0];
+          unique_cat.push(array_unique1);
+        
+          var array_unique = data[key][1];
+          unique_mf.push(array_unique);
+      
+       
+           }); 
+      
+//       console.log(unique_mf);
+      
+      let uni_manufacture = [...new Set(unique_mf)];
+  
+      let uni_category = [...new Set(unique_cat)];
+      
+       var task_names = [];
+      
+      console.log(uni_category);
+      
+      
+       for (var i = 0; i < uni_category.length; i++) {
+        
+        var cate_name = uni_category[i];
+        var cate_id = uni_category[i].replace(/ /g,'-');
+//            console.log(cate_id);
+         
+//          var manu_options = '<option value='+uni_manufacture[i]+'>'+uni_manufacture[i]+'</option>';
+         var manu_options =  '<li class="accordion-menu__item" ><a href="#" class="accordion-menu__link">'+cate_name+'</a><a href='+'#'+cate_id+' class="" data-accordion-menu><span class="accordion-menu__icon"></span></a><ul class="accordion-menu__sublist accordion-menu--hidden menu-level-2" id='+cate_id+'></ul></li>';   
+     
+        $('.desk-nav-custom').append(manu_options);
+        
+       var first_nav =  uni_category[i];
+        
+//         console.log(uni_manufacture[i]);
+        
+//            task_names.push(uni_manufacture[i]);              
+        
+           
+        
+      }
+      
+      
+      for (var i = 0; i < uni_category.length; i++) {
+          console.log(uni_category.length);  
+        
+       for (var i = 0; i < data.length; i++) {
+
+
+              //               console.log('array:- '+task_names[i]);
+              if($.inArray(uni_category[i], data[i]) != -1){  
+//                 console.log('test');
+//                 console.log(data[i][1]);
+                var sub_cate_name = data[i][1];
+                var sub_cate_id = data[i][1].replace(/ /g,'-');
+                
+                var sub_nav = '<li><a class="accordion-menu__sublink">'+sub_cate_name+'</a><a href='+'#'+sub_cate_id+' class="" data-accordion-menu><span class="accordion-menu__icon"></span></a><ul class="accordion-menu__sublist accordion-menu--hidden menu-level-3" id='+sub_cate_id+'></ul></li>';
+                
+                 $('.menu-level-2').map(function() {
+                    var id = $(this).attr('id');
+                    var id_text = $(this).prev().prev().text();
+                   var tab_title = id.replace(/-/g, ' ') ;
+                   console.log(sub_nav);
+                   
+                  
+                   if (uni_category[i]==id_text){
+                    
+                     $('#'+id).append(sub_nav);
+                   }
+                   
+                });
+                
+               
+
+                
+              }
+
+
+            }
+        }
+      
+      
+  
+      
+        for (var i = 0; i < unique_mf.length; i++) {
+          
+       for (var i = 0; i < data.length; i++) {
+//               console.log(unique_mf.length);
+
+              //               console.log('array:- '+task_names[i]);
+              if($.inArray(unique_mf[i], data[i]) != -1){  
+//                 console.log('test');
+//                 console.log(data[i][2]);
+                var sub_nav = '<li><a class="accordion-menu__sublink">'+data[i][2]+'</a></li>';
+                
+                 $('.accordion-menu__sublist').map(function() {
+                    var id = $(this).attr('id');
+                    var id_text = $(this).prev().prev().text();
+                   var tab_title = id.replace(/-/g, ' ') ;
+                  
+                   
+//                    console.log(id_text);
+                   if (unique_mf[i]==id_text){
+                     $('#'+id).append(sub_nav);
+                   }
+                   
+                });
+                
+               
+
+                
+              }
+
+
+            }
+        }
+      
+     
+      
+}
+
+function parseData(url, callBack) {
+    Papa.parse(url, {
+        download: true,
+        dynamicTyping: true,
+        complete: function(results) {
+            callBack(results.data);
+        }
+    });
+}
+     
+  parseData("{{ 'Product-nav.csv' | file_url }}", doStuff);
+ 
+   
+      
+    </script>
+    -->
+  
+</div>
+
+
+{% schema %}
+{
+"name": "Left Side Bar Menu",
+"settings": [
+{
+"id": "text_link",
+"type": "url",
+"label": "Find Your Parta Link"
+},
+{
+"id": "image_icon",
+"type": "image_picker",
+"label": "Image Icon"
+},
+{
+"id": "txt",
+"type": "text",
+"label": "Find Your Partas"
+},
+
+{
+"id": "text_link_one",
+"type": "url",
+"label": "B2B Link"
+},
+{
+"id": "image_icon_1",
+"type": "image_picker",
+"label": "Image Icon"
+},
+{
+"id": "txt_B2B",
+"type": "text",
+"label": "B2B Text"
+}
+],
+"blocks": [
+{
+"type": "service",
+"name": "Service",
+"settings": [
+{
+"id": "col_img",
+"type": "image_picker",
+"label": "Block Image"
+},
+{
+"id": "col_txt",
+"type": "text",
+"label": "Block Text"
+}
+]
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+.desk-nav-custom li.accordion-menu__item:first-child {
+    display: none;
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

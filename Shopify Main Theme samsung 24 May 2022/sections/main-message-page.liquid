@@ -1,0 +1,337 @@
+<div class="search-fridge-main" id="contact-page-main">
+  <h2 class="support-head"> {{ section.settings.title }} </h2>
+  
+
+  
+  <div class="contact_icon_text">
+<!--     <h2> {{ section.settings.title2 }} </h2> -->
+  
+    {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+    
+<div class="contact-form contact">
+  <h2 class="title">{{ section.settings.heading | escape }}</h2>
+  {% comment %}      {% endcomment %}
+ <div id="ContactForm" class="contact-form">
+    {%- if form.posted_successfully? -%}
+      <div class="form-status form-status-list form__message" tabindex="-1" autofocus>{% render 'icon-success' %} {{ 'templates.contact.form.post_success' | t }}</div>
+    {%- elsif form.errors -%}
+      <div class="form__message">
+        <h2 class="form-status caption-large" role="alert" tabindex="-1" autofocus>{% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}</h2>
+      </div>
+      <ul class="form-status-list caption-large" role="list">
+        <li>
+          <a href="#ContactForm-email" class="link">
+            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+          </a>
+        </li>
+      </ul>
+    {%- endif -%}
+  
+      <div class="field">
+        <label class="field__label" for="ContactForm-name"> What is the message about?</label>
+        <select id="message-about" name="contact[Message about]" required>
+          <option value="Select a reason">Select a reason</option>
+           <option value="Cancel order">Cancel order</option>
+           <option value="Check order status">Check order status</option>
+           <option value="Return, refund, exchange">Return, refund, exchange</option>
+           <option value="Research parts">Research parts</option>
+           <option value="Business to business inquiry">Business to business inquiry</option>
+           <option value="Report website problem">Report website problem</option>
+           <option value="Others">Others</option>
+        </select>
+      </div>
+  
+      <div class="field">
+        <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+        <input required class="field__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[{{ 'templates.contact.form.name' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'templates.contact.form.name' | t }}">
+        
+      </div>
+     <div class="field">
+        <label class="field__label" for="ContactForm-name">Last Name</label>
+        <input required class="field__input" autocomplete="name" type="text" id="ContactForm-lname" name="contact[Last Name]" value="" placeholder="Last Name">
+        
+      </div>
+      <div class="field field--with-error">
+        <label class="field__label" for="ContactForm-email">{{ 'templates.contact.form.email' | t }} 
+<!--           <span aria-hidden="true">*</span> -->
+        </label>
+        <input required
+          autocomplete="email"
+          type="email"
+          id="ContactForm-email"
+          class="field__input"
+          name="contact[email]"
+          spellcheck="false"
+          autocapitalize="off"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="ContactForm-email-error"
+          {% endif %}
+          placeholder="{{ 'templates.contact.form.email' | t }}"
+        >
+        
+        {%- if form.errors contains 'email' -%}
+          <small class="contact__field-error" id="ContactForm-email-error">
+            <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+            <span class="form__message">{% render 'icon-error' %}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</span>
+          </small>
+        {%- endif -%}
+      </div>
+ 
+    <div class="field">
+       <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+      <input type="tel" id="ContactForm-phone" class="field__input" autocomplete="tel" name="contact[{{ 'templates.contact.form.phone' | t }}]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'templates.contact.form.phone' | t }}">
+     
+    </div>
+    <div class="field">
+        <label class="form__label field__label" for="ContactForm-body">{{ 'templates.contact.form.comment' | t }}</label>
+      <textarea rows="10" required
+        id="ContactForm-body"
+        class="text-area field__input"
+        name="contact[{{ 'templates.contact.form.comment' | t }}]"
+        placeholder="{{ 'templates.contact.form.comment' | t }}"
+      >
+        {{- form.body -}}
+      </textarea>
+    
+    </div>
+   <div id = 'freshdesk-success'>
+     <p>Ticket is created we will get back to you with resolutions as soon as possible...!!!</p>
+   </div>
+<!--     <div class="contact__button">
+      <button type="submit" class="button">
+        {{ 'templates.contact.form.send' | t }}
+      </button>
+    </div> -->
+   </div>
+
+</div>
+
+ 
+    
+  </div>
+  
+  <div class="contact__button">
+<button class="button disabled-btn freshdesk-send">Submit</button>
+</div>
+  
+  
+</div> 
+
+
+
+{% schema %}
+  {
+    "name": "Message Us Page",
+    "class" : "message-page", 
+    "settings": [
+         {
+        "id": "title",
+        "type": "text",
+        "label": "Page Heading",
+       "default" : "Support"
+        },
+       
+         {
+        "id": "title2",
+        "type": "text",
+        "label": "Heading Contact",
+        "default" : "Contact"
+        }
+        
+
+
+     ]
+
+
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+
+
+  jQuery(document).ready(function(){
+   
+   setTimeout(function(){
+    //code goes here'
+      $('.launcher-button').click();
+      console.log('freshdesk');
+     if (document.querySelector('.launcher-button') !== null) {
+           console.log('freshdesk class found');
+        
+       }
+    }, 8000); 
+
+
+
+    function myFunction(x) {
+  if (x.matches) { // If media query matches
+       $('.frequently-bought-together-block').appendTo('.mobile-bundle-pro'); 
+  } else {
+   $('#freshworks-frame-wrapper').appendTo('.contact-freshdesk');
+  }
+}
+
+var x = window.matchMedia("(max-width: 700px)")
+myFunction(x) // Call listener function at run time
+x.addListener(myFunction) // Attach listener function on state changes
+
+
+var $head = $("#freshwidget-embedded-form").contents().find("head");
+
+$head.append($("<link/>", {
+    rel: "stylesheet",
+    href: url,
+    type: "text/css"
+}));
+
+
+
+});
+  
+{% endjavascript %}
+
+
+
+<style>
+  h3.ellipsis.lead.pull-left.form-title {
+    font-size: 30px;
+    line-height: initial;
+    margin-bottom: 20px;
+}
+  
+  .embedded-wrapper .modal-header h3 {
+    font-size: 26px;
+    color: #30413E;
+    font-weight: 400;
+    line-height: 32.4375px;
+  }
+  
+  
+  h3.ellipsis.lead.pull-left.form-title {
+    font-size: 50px;
+  }
+  #freshdesk-success{
+    display:none;
+    line-height: 1;
+    padding: 1px;
+    border-radius: 5px;
+    color: #155724;
+    background-color: #d4edda;
+  }
+  #freshdesk-success p {
+    padding: 13px;
+    padding-left: 20px;
+    margin: 0;
+  }
+  .freshdesk-send.disabled-btn {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+</style>  
+    
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+<script>
+//   "cc_emails": ["ram@freshdesk.com","diana@freshdesk.com"],
+$(document).ready(function(){
+ $(".freshdesk-send").click( function(e) {
+  e.preventDefault();
+    var messageabout =  $('#message-about').val();
+    var name =  $('#ContactForm-name').val();
+   var lname =  $('#ContactForm-lname').val();
+   var email =  $('#ContactForm-email').val();
+   var phone =  $('#ContactForm-phone').val();
+   var message =  $('#ContactForm-body').val();
+  console.log(messageabout+name+lname+email+phone+message);
+  
+ 
+    var yourdomain = 'samsungpart'; // Your freshdesk domain name. Ex., yourcompany
+    var api_key = 'fj3yfNe3zyq06LjlYWM'; // Ref: https://support.freshdesk.com/support/solutions/articles/215517-how-to-find-your-api-key
+   ticket_data = '{ "description": "Details about the issue...", "subject": "Support Needed", "type" : "'+messageabout+'",  "email": "'+email+'" , "priority": 1, "status": 2,  "custom_fields":{"cf_first_name":"'+name+'","cf_phone_number":'+phone+',"cf_last_name":"'+lname+'","cf_message": "'+message+'","cf_fsm_contact_name":null,"cf_fsm_phone_number":null,"cf_fsm_service_location":null,"cf_fsm_appointment_start_time":null,"cf_fsm_appointment_end_time":null} }';
+    $.ajax(
+      {
+        url: "https://"+yourdomain+".freshdesk.com/api/v2/tickets",
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+          "Authorization": "Basic " + btoa(api_key + ":x")
+        },
+         data: ticket_data,
+        success: function(data, textStatus, jqXHR) {
+          $('#freshdesk-success').fadeIn();
+           $('#freshdesk-success').fadeOut(3000);
+          
+          $('#result').text('Success');
+          $('#code').text(jqXHR.status);
+      //Removed the standard response
+      //converted the response to JSON
+    var jsonText = JSON.stringify(data);
+            var obj = data;
+           $.each(data, function(i, item) {
+           console.log(item.email);
+           });
+          
+          console.log(data);
+            var tbl=$("<table/>").attr('id','mytable');
+            $('#response').append(tbl);
+    //added a table element and then looped through each subject and added it as a seperate div that cals the closure function
+
+    for(var i=0;i<obj.length;i++){
+    var td1="<div id='"+obj[i].subject+"' onclick='CloseTicket()'>Subject: "+obj[i].subject+"<br></div>";
+    $('#mytable').append(td1);
+     }
+
+
+        },
+        error: function(jqXHR, tranStatus) {
+          $('#result').text('Error');
+          $('#code').text(jqXHR.status);
+          x_request_id = jqXHR.getResponseHeader('X-Request-Id');
+          response_text = jqXHR.responseText;
+          $('#response').html(" Error Message : <b style='color: red'>"+response_text+"</b>.<br/> Your X-Request-Id is : <b>" + x_request_id + "</b>. Please contact support@freshdesk.com with this id for more information.");
+        }
+      }
+    );
+  });
+});
+
+  
+   $('#ContactForm input').keyup(function()
+ {
+    if($('#ContactForm-name').val() != "" && $('#ContactForm-lname').val() != "" && $('#ContactForm-email').val() != "" && $('#ContactForm-phone').val() != "" ) {
+      console.log('form-submitted');
+          $('.freshdesk-send').removeClass('disabled-btn');
+    }
+      else {
+       $('.freshdesk-send').addClass('disabled-btn');
+      }
+});
+  
+  
+</script>
+
+<!-- <br/>
+<table cellspacing = '10'>
+ <tr>
+    <td> <b>Result</b></td>
+   <td> <div id = 'result'></div> </td>
+  </tr>
+  <tr>
+    <td> <b>Code</b></td>
+    <td> <div id = 'code'></div> </td>
+  </tr>
+ <tr>
+    <td> <b>Response</b></td>
+   <td> <div id = 'response'></div> </td>
+  </tr>
+</table>
+ -->
