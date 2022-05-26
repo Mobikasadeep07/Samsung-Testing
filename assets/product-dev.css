@@ -1,0 +1,238 @@
+.product__media-list .slick-arrow {
+    width: 15px;
+    height: 26px;
+}
+    .slick-dots li button:before{
+          font-size: 12px;
+    }
+.product__media-list .slick-arrow:before{
+display:none
+}
+.product__media-list .slick-arrow {
+    background-image: url(https://cdn.shopify.com/s/files/1/0601/8488/7543/files/arrow-right.png?v=1640847533);
+   background-repeat: no-repeat;
+}
+.product__media-list button.slick-prev.slick-arrow {
+    transform: rotate(180deg);
+}
+.product__media-list .slick-track, .product__media-list-first-image .slick-track{
+    display: flex;
+}
+.product__media-list-first-image{
+    border:1px solid #CACACA;
+  border-radius:5px;
+      margin-bottom: 40px;
+  margin-left:0rem;
+    }
+    
+    .product__media-list-first-image img{
+    border-radius:5px;
+    }  
+   .product__media-list .slick-track .product__media-item .product__media img{
+        border: 1px solid #CACACA;
+    border-radius: 5px;
+      }
+    .cgt-desc{
+    margin-top:100px;
+    }
+    .cgt-desc ul li:first-child a {
+    border-right: none;
+}
+    .product-form__quantity{
+    display: flex;
+    align-items: center;    
+    }
+.product-form__quantity label{     
+    margin-bottom: 0rem;
+  margin-right:10px;
+}    
+    .product-form__quantity .quantity{
+    max-width:100px;
+      border: 1px solid #707070;
+    }
+.product-form__buttons{
+    display: flex;
+    align-items: center;  
+  gap:26px;
+}   
+    .product-form{    
+        margin: 40px 0 35px  !important;
+     } 
+    .product-form__buttons .shopify-payment-button, .product-form__buttons .product-form__submit{
+          box-shadow: none;
+    width:50%;
+      background: #1428A0 0% 0% no-repeat padding-box;
+    border-radius: 26px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    margin-bottom:0;  
+      padding:0;
+    }
+     .product-form__buttons .shopify-payment-button__button{
+                 box-shadow: none;
+      background: #1428A0 0% 0% no-repeat padding-box;
+    border-radius: 26px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    padding: 0;
+    }
+    .product-form__buttons .shopify-payment-button__button:hover, .product-form__buttons .product-form__submit:hover{
+      background: #1428A0 0% 0% no-repeat padding-box;
+      box-shadow: none;
+    }
+    .product__info-container b, .price, .product__title{    
+font-family: 'SamsungOne 700';    
+      color:#000;
+      }
+.product__title{    
+    font-size: 28px;
+      margin-bottom: 5px;
+}
+    .product__info-container{    
+font-family: 'SamsungOne 400';    
+      color:#000;
+      }    
+    .container_flex {
+     padding-left: 0px;
+}
+    
+    .product-form__buttons button{   
+        text-transform: uppercase;
+      font-family: 'SamsungOne 700'; 
+      }
+    
+.product__media-list .product__media-icon.motion-reduce,
+.product__media-list .product__media-toggle{
+    display: none !important
+}  
+    .product__media-icon{
+    opacity:1 !important;
+      bottom:2%;
+      right:2%;
+      left: unset;
+    top: unset;
+    }  
+    .price-display{    
+margin-top: 12px;    
+    }
+.price-display .price{        
+    font-size: 28px;
+}   
+    .product__media-list{
+    width: 88%;
+    margin: 0 auto;
+    }
+    ul.product__media-list-first-image .slick-list .slick-track li.product__media-item.grid__item {
+    padding-left: 1px;
+}
+    .add_extra-icon-text a:active{
+    	color:#1428A0;
+    }
+    .add_extra-icon-text a{
+    font-family: 'SamsungOne 700'; 
+    }
+    .product__media-list li.product__media-item.grid__item{     
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;    
+    } 
+    .product__info-wrapper{
+      padding-top:5px;
+    }    
+    .product__media-list .product__media {
+      cursor: pointer;
+    }
+    
+    @media screen and (max-width: 767px){    
+      .product-section {
+    margin-top: 50px;
+}
+.product__title {
+    font-size: 20px;
+  margin-bottom: 15px;
+}
+.product__info-wrapper .product__title {
+    display:none;
+}      
+.product__info-wrapper {
+        padding-top: 25px;
+}
+      .product-section {
+    margin-top: 00px;
+}
+      .page-width{
+      padding:0;
+      }
+      .product-form__buttons {
+    gap: 16px;
+}
+      .slider-buttons{
+      	display:none;
+      }
+      .slider.slider--mobile{
+      overflow:unset;
+      }
+      .grid__item.product__media-wrapper{
+      margin-bottom:20px;
+      }
+.product-form__buttons .shopify-payment-button__button, .product-form__buttons .product-form__submit{      
+  padding:0;
+    }
+      .product__media-list{
+      display:none;
+      }
+      .slider-mobile-gutter{
+        margin-left: 1.5rem !important;
+        margin-right: 1.5rem !important;
+      }     
+      .container {
+    padding: 0 16px;
+}
+    } 
+    @media screen and (max-width: 1365px){
+
+    }
+    @media screen and (min-width: 768px){
+.product__media-wrapper .product__title {
+    display:none;
+}
+ 
+    }    
+      @media screen and (max-width: 1023px) and (min-width: 768px){
+        .page-width {
+          padding: 0 1.5rem;
+        }
+        .grid__item.product__media-wrapper{
+        	width:40%;
+        }
+        .product__info-wrapper.grid__item{
+            width:60%;
+        }
+        .product__title {
+          font-size: 20px;
+    margin-bottom: 20px;
+}
+        .add_extra-icon-text a, .product__info-container{
+          font-size: 14px;
+        }
+        .price-display .price{
+        font-size: 20px;
+        }
+        .product-form__quantity b{
+        	  font-size: 18px;
+        }
+      }
+    @media screen and (min-width: 990px){    
+    .product:not(.product--no-media):not(.featured-product) .product__media-wrapper{
+    padding-right: 4%;    
+}
+      .spaced-section{
+      	margin-top: 3rem;
+      }
+    }  
+
+
+  
