@@ -1,0 +1,492 @@
+{% comment %}
+<!-- BEGIN USF -->
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+
+<link rel="preload" href="{{ 'component-card.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{{ 'component-price.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{{ 'component-badge.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{{ 'component-rte.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="stylesheet" href="{{ 'component-pagination.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-badge.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+
+
+<script src="{{ 'collection-filters-form.js' | asset_url }}" defer="defer"></script>
+
+<div id="CollectionProductGrid">
+   
+      <div class="collection page-width">
+        <div class="loading-overlay">
+          <div class="loading-overlay__spinner">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+            </svg>
+          </div>
+        </div>
+
+        <div id="usf_container"></div>
+        <script>
+          window.usfSettings = {
+            sectionId : {{section.id | json }},
+            products_count : {{ collection.products_count | json }},
+            add_image_padding : {{ section.settings.add_image_padding | json}},
+            image_ratio : {{ section.settings.image_ratio | json }},
+            show_secondary_image : {{ section.settings.show_secondary_image | json }},
+            show_vendor : {{ section.settings.show_vendor | json }},
+            sold_out_badge_color_scheme : {{ settings.sold_out_badge_color_scheme | json }},
+            sale_badge_color_scheme : {{ settings.sale_badge_color_scheme | json }},
+            description : {{ block.settings.description | json }}
+          };
+        </script>
+
+      </div>
+</div>
+
+<!-- END USF -->
+
+USF
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+
+<link rel="preload" href="{{ 'component-rte.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+  {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+  <div class="page-width" id="main-collection-filters" data-id="{{ section.id }}">
+    {% render 'facets', results: collection, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting, collapse_on_larger_devices: section.settings.collapse_on_larger_devices %}
+  </div>
+{%- endif -%}
+
+<div id="ProductGridContainer">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    {%- if collection.products.size == 0 -%}
+      <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+        <div class="loading-overlay gradient"></div>
+        <div class="title-wrapper center">
+          <h2 class="title title--primary">
+            {{ 'sections.collection_template.empty' | t }}<br>
+            {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: "underlined-link link" }}
+          </h2>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="collection page-width">
+        <div class="loading-overlay gradient"></div>
+
+        <ul id="product-grid" data-id="{{ section.id }}" class="
+          grid grid--2-col negative-margin product-grid
+          {% if collection.products_count < 4 %} grid--{{ collection.products_count }}-col-tablet{% else %}
+            {% if collection.products_count == 4 %} grid--4-col-desktop{% else %} grid--3-col-tablet grid--one-third-max grid--4-col-desktop grid--quarter-max{% endif %}
+          {% endif %}">
+          {%- for product in collection.products -%}
+            <li class="grid__item">
+              {% render 'product-card',
+                product_card_product: product,
+                media_size: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                add_image_padding: section.settings.add_image_padding,
+                show_vendor: section.settings.show_vendor,
+                show_image_outline: section.settings.show_image_outline,
+                show_rating: section.settings.show_rating
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+          {% render 'pagination', paginate: paginate, anchor: '' %}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+
+USF
+{% endcomment %}
+
+<div class="search-fridge-main">    
+<p class="result-count" style="display:none;">
+  <span class="collection-pro-count"></span> results for {{ collection.title }}
+  </p>
+  <div class="search-within search_model_number ">
+      <h2 class="heading-within"> {{ section.settings.title2 }} </h2> 
+    <h2 class="heading-within" style="display:none;">
+      <!--         {{ section.settings.title2 }}  -->
+      Search <span>within</span> these results<span class="search-query-diagram"></span>
+    </h2>   
+    <div class="mobile-hide">
+    <p class="base-two">For better results, enter your model or part number to narrow down your search.</p>
+    <div class="add_extra-icon-text s700">      
+      <div><a href="/pages/find-part"><img src="https://cdn.shopify.com/s/files/1/0601/8488/7543/files/icon2_2.png?v=1640849193" style="margin-right:10px;">How do I find my model number?</a></div>
+    </div>
+    </div>
+    
+    <div class="search-form-results">
+    <p class="s700" style="margin-bottom: 5px;"><b>Search within these results</b></p>
+   <form action="" method="get" role="search" class="find-search-form">          
+    <input class="search-input-bx" type="search" name="q" placeholder="Search" aria-label="Search" autocomplete="off">
+    <button type="submit" class="btn submit"><img src="//cdn.shopify.com/s/files/1/0601/8488/7543/t/5/assets/icon_bold.png?v=14985898541735511435" alt=""> </button>
+      </form></div>
+    
+        <div class="mobile-show">
+    <p class="base-two">For better results, enter your model or part number to narrow down your search.</p>
+    <div class="add_extra-icon-text s700">      
+      <div><a href="#"><img src="https://cdn.shopify.com/s/files/1/0601/8488/7543/files/icon2_2.png?v=1640849193" style="margin-right:10px;">How do I find my model number?</a></div>
+    </div>
+    </div>
+     <div class="sort-right-results">
+      <p>Filter results by part type</p>
+    <select class="sort-by">
+      <option value="">Select a part type</option>
+      <option value="">Select a part type</option>
+      <option value="">Select a part type</option>
+    </select>
+    </div>
+    <div class="sort-right-align">
+<!--       <label><b>Sort By</b></label>
+    <select class="sort-by">
+      <option value="">Popularity</option>
+      <option value="">A-Z</option>
+      <option value="">Z-A</option>      
+    </select> -->
+      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      
+  {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+  <div class="page-width1" id="main-collection-filters" data-id="{{ section.id }}">
+    {% render 'collection-sorting', results: collection, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting, collapse_on_larger_devices: section.settings.collapse_on_larger_devices %}
+  </div>
+{%- endif -%}
+      
+    </div>
+  </div>
+  {%- paginate collection.products by section.settings.products_per_page -%}
+  <div class="product-listing-section" id="ProductGridContainer">
+    <div class="collection">
+  	<div class="inner-section"  id="product-grid" data-id="{{ section.id }}">
+      {%- for product in collection.products -%}
+      
+      
+      
+      <div class="semi-inner grid__item">
+        <div class="left-image">
+          <a href="{{ product.url }}"><img src="{{ product.featured_image | product_img_url: '149x' }}"></a>
+        </div>
+        <div class="right-desc">
+          <h3>{{ product.title }}</h3>
+          <ul>
+           
+            <li><b>Description:</b>    {{ product.description }}</li>
+            <li><b>Specifications:</b>   {{ product.metafields.my_fields.specification.value }}</li>
+            <li><b>Availability:</b>    {{ product.metafields.my_fields.stock_status.value | remove : 'Invst_Back ordered,' | remove : 'Invst_' }}</li>
+           <li><b>Product:</b>    {{ product.metafields.my_fields.collections.value }} </li>
+         
+          </ul>
+          
+          
+          
+          
+          
+           {% for variant in product.variants %} 
+                    
+                         {% if customer %}
+                        
+                        {% if customer.tags contains 'Dealer' %}
+                        
+                           {% if variant.title contains 'Dealer' %}
+                           {% assign selected_variant =  variant.id %}
+                          {% assign selected_variant_price =  variant.price %}
+                          <h3>{{ selected_variant_price | money }}</h3>
+           
+                           <div class="shop-button">
+                          <a href="{{ product.url }}">VIEW</a>
+                          <a class="add-to-cart-col  {% if variant.available == false %}sold-out{% endif %} {{  variant.title }}" data-val="{{ selected_variant }}" href="#">
+                            {%- if variant.available == false -%}
+                            Sold Out
+                            {% else %}
+                            ADD TO CART
+                            {% endif %}
+                          </a>
+                        </div>
+          
+                        {% endif %}
+                        
+                         {% elsif  customer.tags contains 'Non-Asc' %}
+                        
+                        {% if variant.title contains 'Non-Asc' %}
+                       {% assign selected_variant =  variant.id %}
+                        {% assign selected_variant_price =  variant.price %}
+                       
+          
+                      <h3>{{ selected_variant_price | money }}</h3>
+                             
+                        <div class="shop-button">
+                          <a href="{{ product.url }}">VIEW</a>
+                          <a class="add-to-cart-col  {% if variant.available == false %}sold-out{% endif %} {{  variant.title }}" data-val="{{ selected_variant }}" href="#">
+                            {%- if variant.available == false -%}
+                            Sold Out
+                            {% else %}
+                            ADD TO CART
+                            {% endif %}
+                          </a>
+                        </div>
+
+                       
+                         
+                        {% endif %}
+                        
+                        {% else %}
+                        
+                         {% if variant.title contains 'Retail' %}
+                       {% assign selected_variant =  variant.id %}
+                      {% assign selected_variant_price =  variant.price %}  
+                        <h3>{{ selected_variant_price | money }}</h3>
+                             
+                        <div class="shop-button">
+                          <a href="{{ product.url }}">VIEW</a>
+                          <a class="add-to-cart-col  {% if variant.available == false %}sold-out{% endif %} {{  variant.title }}" data-val="{{ selected_variant }}" href="#">
+                            {%- if variant.available == false -%}
+                            Sold Out
+                            {% else %}
+                            ADD TO CART
+                            {% endif %}
+                          </a>
+                        </div>
+          
+                        {% endif %}
+                        
+                         {% endif %}
+                        
+                        
+                        
+                        {% else %}
+                        
+                           {% if variant.title contains 'Retail' %}
+                      {% assign selected_variant =  variant.id %}
+                  {% assign selected_variant_price =  variant.price %}
+                      <h3>{{ selected_variant_price | money }}</h3>
+                         
+                    <div class="shop-button">
+                          <a href="{{ product.url }}">VIEW</a>
+                          <a class="add-to-cart-col  {% if variant.available == false %}sold-out{% endif %} {{  variant.title }}" data-val="{{ selected_variant }}" href="#">
+                            {%- if variant.available == false -%}
+                            Sold Out
+                            {% else %}
+                            ADD TO CART
+                            {% endif %}
+                          </a>
+                        </div>
+          
+                        {% endif %}
+                        
+                        {% endif %}
+                        
+                        
+                       
+                     
+     {%- endfor -%}
+          
+          
+        </div>
+      </div>
+      
+        
+      {% endfor %}
+      
+       {%- if paginate.pages > 1 -%}
+          {% render 'pagination', paginate: paginate, anchor: '' %}
+        {%- endif -%}
+      
+
+    </div>
+    </div>
+  </div>
+  
+  
+  {% endpaginate %}
+</div>
+
+<script>
+     $(document).on('click','.add-to-cart-col',function(event){ 
+var ID = $(this).attr('data-val'); 
+  console.log('product id: '+ID);
+       event.preventDefault();
+  var qty = 1;     
+       
+$.ajax({
+type: 'POST',
+url: '/cart/add.js',
+data: {
+  quantity: qty,
+  id: ID
+},
+  dataType: 'json', 
+ success: function (data) { 
+    jQuery.getJSON('/cart.js', function(cart) {
+  $('#CartCount span:first').text(cart.item_count);
+      
+    });
+ window.location.replace("/cart");
+   
+   
+ },
+  error : function (error) { 
+     console.error('Error:', error);
+    alert(error.responseJSON.description);
+   
+ }
+ }); 
+}) 
+</script>     
+     
+<style>
+/*   .collection.loading {
+    -webkit-animation: initial;
+    border: none;
+    padding: 0px;
+    border-radius: 0px;
+} */ 
+  .collection.loading {
+    margin: 0 auto;
+}
+  .collection.loading .inner-section {
+    display: none;
+    margin: 0 auto;
+}
+  .collection-page-main .sort-right-results {
+    float: right;
+    width: 50%;
+    padding-left: 9px;
+/*     display: flex; */
+    flex-wrap: wrap;
+    justify-content: right;
+}
+  
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "spaced-section collection-grid-section collection-page-main",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_image_padding",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.add_image_padding.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_outline",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.show_image_outline.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapse_on_larger_devices",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.collapse_on_larger_devices.label"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+   $.ajax({
+     type: 'GET',
+//      url: 'https://svc-2-usf.hotyon.com/search?q='+search_value+'&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+     url : 'https://samsung-parts-nj.myshopify.com/collections/{{ collection.handle }}/count.json', 
+     dataType: 'json',
+     success: function(data) { 
+     
+        console.log(data.collection.products_count);
+       $('.collection-pro-count').html(data.collection.products_count);
+       $('.search-fridge-main .result-count').show();
+       
+     }
+   });
+  
+</script>

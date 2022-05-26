@@ -1,0 +1,1000 @@
+<div class="find_part_banner">
+  <img src="{{ section.settings.banner_img | img_url : 'master' }}" alt="">
+  <h1> {{ section.settings.title }} </h1>    
+</div>
+
+<div class="find_part_content">
+  <div class="search_model_number">
+  <h2><span>Have</span> the model or part number?</h2>
+  <h6>Search for parts using the model or part number.</h6>
+  <form action="" method="get" role="search" class="find-search-form">          
+    <input class="search-input-bx" type="text" name="q" placeholder="Search" aria-label="Search" autocomplete="off">
+    <button type="submit" class="btn submit"><img src="{{ 'icon_bold.png' | asset_url  }}" alt=""> </button>
+  </form>
+    
+  <h2><span>Don't have</span> the model or part number?</h2>   
+  <h6 id="follow-steps-head">Follow the steps below to help you find the right part for your need.</h6>
+  </div>
+  
+<!--     <input type="search" name="q1" class="custom-search1">
+    <button class="search_btn">Search</button>
+  <div class="response_search">
+  </div> -->
+  
+  <div class="select_your_product">
+    <div class="form-option">
+    <label>Step 1: Select your product's category.</label>
+    <select id="select-category">
+      <option value="Select a category">Select a category</option>
+    </select>
+    </div>
+    <div class="form-option">
+    <label>Step 2: Select your product.</label>
+    <select id="select-product">
+      <option value="Select a product">Select a product</option>
+     </select>
+    </div>
+    
+    <div class="form-option locate-modal">
+    <label>Step 3: Locate your model number/code of your product <br> based on the instructions below.*</label>
+    <img src="{{ 'demo-instructions.png' | asset_url  }}">
+      <div class="instructions-text">
+      <h6>* What is the difference between a model number and a model code? </h6>
+      <p>Model code is an extension of a model number that contains more details. When possible, use the model code to get a perfectly-matching part for your product. (e.g. Model Number: UN55B7000WF, Model Code: UN55B7000WFXZA)</p>
+      </div>
+    </div>
+    
+    <div class="form-option search_model_number mb">
+     
+      <label>Step 4: Search for parts using the model number/code you found.</label>
+      <form action="" method="get" role="search" class="find-search-form">          
+        <input id="search-with-data"  class="search-input-bx" type="text" name="q1" placeholder="Search" aria-label="Search" autocomplete="off">
+        <button type="submit" class="btn submit"><img src="{{ 'icon_bold.png' | asset_url  }}" alt=""> </button>
+      </form>
+       <div id="cate-col-data"></div>
+    </div>
+    
+     <div class="filter-loading" >
+<!--   <img src="https://cdn.shopify.com/s/files/1/0068/1836/5529/files/loader.gif?v=1640586396"> -->
+    <div class="loader-holder" id="loader-holder">
+      <div class="loading"></div>
+      <label>loading</label>
+  </div>
+  
+</div>
+    
+  </div>
+</div>
+
+
+
+{% schema %}
+{
+"name": "Find Part",
+ "class" : "find-parts-main",
+"settings": [
+{
+"id": "banner_img",
+"type": "image_picker",
+"label": "Banner Image"
+},
+
+{
+"id": "title",
+"type": "text",
+"label": "Banner Image Text"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+
+ .filter-loading{
+    display:none;
+    position: absolute;
+    left: 0;
+    top: 15px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height:100%;
+/*     background: #0000005e; */
+    padding: 15px;
+  }
+  
+.loading {
+  height: 0;
+  width: 0;
+  padding: 12px;
+  margin-top: 3px;
+  margin-left: 3px;
+  border: 6px solid #ccc;
+  border-right-color: #888;
+  border-radius: 22px;
+  -webkit-animation: rotate 1s infinite linear;
+  /* left, top and position just for the demo! */
+/*   position: absolute;
+  left: 50%;
+  top: 44%; */
+}
+  
+.loader-holder {
+    display: block;
+    height: 50px;
+    width: 50px;
+    background: rgb(128 128 128 / 50%);
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    padding: 4px;
+    border-radius: 5px;
+}
+.loader-holder .loading {
+    display: block!important;
+}
+
+.select_your_product {
+    position: relative;
+}
+
+#loader-holder label {
+    font-size: 11px;
+    margin-top: 8px;
+    display: block;
+   text-align: center;
+}
+  
+@-webkit-keyframes rotate {
+  /* 100% keyframe for  clockwise. 
+     use 0% instead for anticlockwise */
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+      var ajax_urls = [];
+     var global_array = [];
+    
+     
+    $.ajax({
+     type: 'GET',
+//      url: 'https://svc-2-usf.hotyon.com/search?q='+search_value+'&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+     url : 'https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=0&take=400', 
+     dataType: 'json',
+
+      success: function(data) { 
+//         console.log(data);
+        $.each(data, function(i, item) {
+//             console.log(item.total);
+          var total_item = item.total;
+          
+          for (var i = 0; i < item.total; i += 200) {
+            //        console.log('Value of i: https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip='+i+'&take=200');
+            var api_url = "https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip="+i+"&take=200";
+            ajax_urls.push(api_url);
+          }
+          
+        });
+        
+//          console.log(ajax_urls);
+        
+        
+       
+    console.log(ajax_urls.length);
+//     console.log(ajax_urls);
+      var urls = ajax_urls ;
+//        $.each(ajax_urls, function(i,u){ 
+
+//       console.log(u);
+
+//     });
+     
+    
+ 
+    
+    var urlsaj = ['https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=0&take=200','https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=200&take=200','https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=400&take=200', 'https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=200&take=200','https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=600&take=200'];
+
+      
+//     let urls1 = [
+//   'url1',
+//   'url2',
+//  'url3'
+// ];
+
+// map every url to the promise of the fetch
+let requests = urls.map(url => fetch(url));
+
+// Promise.all waits until all jobs are resolved
+Promise.all(requests)
+  .then(responses => responses.forEach(
+    response => $.ajax(response.url, 
+             { type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                             console.log(data);
+                global_array.push(data); 
+                //            console.log('end of request');
+              } 
+             }
+            )
+  ));
+
+      
+    console.log(urls);
+
+
+   
+     
+    
+//     $.each(urls, function(i,u){ 
+//       $.ajax(u, 
+//              { type: 'GET',
+//               dataType: 'json',
+//               success: function (data) {
+//                 //              console.log(data);
+//                 global_array.push(data); 
+//                 //            console.log('end of request');
+//               } 
+//              }
+//             );
+//     });
+      
+      
+        var myArray = [];
+     
+    setTimeout(function() {
+        console.log('Global array:- ');
+    console.log(global_array);
+      
+      console.log(global_array.length);
+      
+      for(var i = 0, len = global_array.length; i < len; i++) {
+//        console.log(global_array[i].data);
+        
+         $.each(global_array[i], function(i, item) {
+          if (item.items) {
+            item.items.forEach(brands => {
+             var items_array = brands;
+//               console.log(items_array);
+              
+                $.each(brands.metafields, function(key,value) {
+//                     console.log(brands.metafields[key]);
+                  
+                  for (var i = 0; i < brands.metafields.length; i++) {
+                  
+//                    console.log(brands.metafields[i].key);
+                    var key = brands.metafields[i].key;
+                    if(key == "lvl1"){
+//                      console.log(brands.metafields[i].value);
+                     var value_new = brands.metafields[i].value.substring(5);
+                      
+                      console.log(value_new);
+                     var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+                      
+                  $('#select-category').append('<option value="Select a category">Select a category</option>'+option1);
+                    }
+
+                  }  
+                  
+                
+                  
+                 
+                });
+              
+             
+            });
+          }
+        });
+
+        
+      }
+    
+    }, 3300);
+    
+
+   
+    
+      }
+      });
+    
+    
+    
+    
+   
+
+    
+ 
+    
+ $('.filter-loading').fadeIn();
+           $('.filter-loading').css('display', 'flex');
+           setTimeout(function() {
+             $('.filter-loading').fadeOut();
+           }, 3600);
+    
+//  console.log(myArray);    
+    
+    
+    
+//  $.ajax({
+//      type: 'GET',
+// //      url: 'https://svc-2-usf.hotyon.com/search?q='+search_value+'&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+//      url : 'https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&skip=0&take=400', 
+//      dataType: 'json',
+
+//       success: function(data) { 
+// //         console.log(data);
+
+//          var task_names = data;
+         
+//         $('#select-category').empty();
+        
+//         $.each(data, function(i, item) {
+//           if (item.items) {
+//             item.items.forEach(brands => {
+//              var items_array = brands;
+// //               console.log(items_array);
+              
+//                 $.each(brands.metafields, function(key,value) {
+// //                     console.log(brands.metafields[key]);
+                  
+//                   for (var i = 0; i < brands.metafields.length; i++) {
+                  
+// //                    console.log(brands.metafields[i].key);
+//                     var key = brands.metafields[i].key;
+//                     if(key == "lvl1"){
+// //                      console.log(brands.metafields[i].value);
+//                      var value_new = brands.metafields[i].value.substring(5);
+                      
+// //                       console.log(value_new);
+//                      var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+                      
+//                   $('#select-category').append('<option value="Select a category">Select a category</option>'+option1);
+//                     }
+
+//                   }  
+                  
+                
+                  
+                 
+//                 });
+              
+             
+//             });
+//           }
+//         });
+
+        
+        
+//       }
+     
+//     });
+    
+    
+ 
+    
+    $('#select-category').on('change', function() {
+//       console.log( this.value );
+      var cate_value =  $(this).val();
+      
+//           console.log(data);
+
+//           var task_names = data;
+
+          $('#select-product').empty();
+           var task_names1 = [];
+          
+      for(var i = 0, len = global_array.length; i < len; i++) {
+          $.each(global_array[i], function(i, item) {
+            if (item.items) {
+//               var brands =  item.items;
+               
+              
+//               brands.forEach(function (i) {
+//                 task_names1.push(i);              
+//               });
+                item.items.forEach(brands => { 
+              $.each(brands.metafields, function(key,value) {
+                //    console.log(brands.metafields[key]);
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+//                   console.log(value1);
+                  
+                  if(key1 == "lvl1" && value1 == 'lvl1_'+cate_value ){
+//                       console.log('test');
+//                        console.log(brands.metafields[i].value);
+//                     console.log(brands);
+                   
+                      
+                      if($.inArray(brands, task_names1) != -1){ 
+                   
+//                     console.log('Matched');
+                      }
+                      else{
+//                       console.log('Not Matched');
+                         task_names1.push(brands); 
+                      }
+                  }
+
+                }  
+
+
+
+
+              });
+                 });
+                   
+
+            }
+
+         });  
+      }
+          
+          
+//           console.log(task_names1);
+//           console.log(data);
+          
+          
+             $.each(task_names1, function(i, item) {
+               
+               task_names1.forEach(brands => { 
+                 
+              $.each(brands.metafields, function(key,value) {
+                   
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+//                 console.log(brands.metafields[i].key);
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+//                   console.log(value1);
+                  
+                  if(key1 == "collections"){
+                     
+//                       console.log('test');
+//                     console.log('Collections value:- '+brands.metafields[i].value);
+                    var value_new = brands.metafields[i].value;
+//                     console.log(brands);
+                   var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+//                       alert(option1);
+                   
+                       $('#select-product').append('<option value="Select a product">Select a product</option>'+ "<option value='"+value_new+"'>"+value_new+"</option>");
+              
+                      
+                  }
+
+                }  
+
+              });
+                 
+               });
+
+
+              });
+          
+          
+          
+          
+          
+     
+       
+      
+//     $.ajax({
+//         type: 'GET',
+//         //      url: 'https://svc-2-usf.hotyon.com/search?q='+search_value+'&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+//         url : 'https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6&take=8000',
+//         dataType: 'json',
+//         success: function(data) { 
+// //           console.log(data);
+
+// //           var task_names = data;
+
+//           $('#select-product').empty();
+//            var task_names1 = [];
+          
+//           $.each(data, function(i, item) {
+//             if (item.items) {
+// //               var brands =  item.items;
+               
+              
+// //               brands.forEach(function (i) {
+// //                 task_names1.push(i);              
+// //               });
+//                 item.items.forEach(brands => { 
+//               $.each(brands.metafields, function(key,value) {
+//                 //    console.log(brands.metafields[key]);
+
+//                 for (var i = 0; i < brands.metafields.length; i++) {
+
+// //                        console.log(brands.metafields[i].key);
+//                   var key1 = brands.metafields[i].key;
+//                   var value1 = brands.metafields[i].value;
+// //                   console.log(value1);
+                  
+//                   if(key1 == "lvl1" && value1 == 'lvl1_'+cate_value ){
+// //                       console.log('test');
+// //                        console.log(brands.metafields[i].value);
+// //                     console.log(brands);
+                   
+                      
+//                       if($.inArray(brands, task_names1) != -1){ 
+                   
+// //                     console.log('Matched');
+//                       }
+//                       else{
+// //                       console.log('Not Matched');
+//                          task_names1.push(brands); 
+//                       }
+//                   }
+
+//                 }  
+
+
+
+
+//               });
+//                  });
+                   
+
+//             }
+
+//          });  
+          
+          
+          
+          
+          
+// //           console.log(task_names1);
+// //           console.log(data);
+          
+          
+//              $.each(task_names1, function(i, item) {
+               
+//                task_names1.forEach(brands => { 
+                 
+//               $.each(brands.metafields, function(key,value) {
+                   
+
+//                 for (var i = 0; i < brands.metafields.length; i++) {
+// //                 console.log(brands.metafields[i].key);
+// //                        console.log(brands.metafields[i].key);
+//                   var key1 = brands.metafields[i].key;
+//                   var value1 = brands.metafields[i].value;
+// //                   console.log(value1);
+                  
+//                   if(key1 == "collections"){
+                     
+// //                       console.log('test');
+// //                     console.log('Collections value:- '+brands.metafields[i].value);
+//                     var value_new = brands.metafields[i].value;
+// //                     console.log(brands);
+//                    var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+// //                       alert(option1);
+                   
+//                        $('#select-product').append('<option value="Select a product">Select a product</option>'+ "<option value='"+value_new+"'>"+value_new+"</option>");
+              
+                      
+//                   }
+
+//                 }  
+
+//               });
+                 
+//                });
+
+
+//               });
+          
+          
+          
+          
+          
+//         }
+        
+//   }); 
+
+   });   
+    
+   
+    
+    $('#select-product').on('change', function() {
+      console.log( this.value );
+      var cate_value =  $('#select-category').val();
+      var collection_val = $(this).val();
+      console.log('category Val: '+cate_value);
+      console.log('collection value: '+collection_val);
+ 
+//           console.log(data);
+
+//           var task_names = data;
+
+          
+           var task_names1 = [];
+            var task_names2 = [];
+          
+           for(var i = 0, len = global_array.length; i < len; i++) {
+          $.each(global_array[i], function(i, item) {
+         
+            if (item.items) {
+//               var brands =  item.items;
+               
+              
+//               brands.forEach(function (i) {
+//                 task_names1.push(i);              
+//               });
+                item.items.forEach(brands => { 
+              $.each(brands.metafields, function(key,value) {
+                //    console.log(brands.metafields[key]);
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+//                   console.log(value1);
+                  
+                  if(key1 == "lvl1" && value1 == 'lvl1_'+cate_value ){
+//                       console.log('test');
+                       console.log(brands.metafields[i].value);
+//                     console.log(brands);
+                   
+                      
+                      if($.inArray(brands, task_names1) != -1){ 
+                   
+//                     console.log('Matched');
+                      }
+                      else{
+//                       console.log('Not Matched');
+                         task_names1.push(brands); 
+                      }
+                  }
+
+                }  
+
+
+
+
+              });
+                 });
+                   
+
+            }
+
+         });  
+          
+          }
+          
+          
+          
+          console.log(task_names1);
+//           console.log(data test);
+          
+//            task_names2.push(collection_val);
+          
+                $.each(task_names1, function(i, item) {
+               
+               task_names1.forEach(brands => { 
+                 
+              $.each(brands.metafields, function(key,value) {
+                   
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+//                 console.log(brands.metafields[i].key);
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+                  
+                  
+                  if(value1 == collection_val ){
+                     if($.inArray(brands, task_names2) != -1){ 
+                   
+//                     console.log('Matched');
+                      }
+                      else{
+//                       console.log('Not Matched');
+                         task_names2.push(brands); 
+                      }
+                  
+                  
+                     console.log(value1);
+//                       console.log('test');
+//                     console.log('Collections value:- '+brands.metafields[i].value);
+                    var value_new = brands.metafields[i].value;
+//                     console.log(brands);
+                   var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+//                       alert(option1);
+                   
+//                        $('#select-product').append('<option value="Select a product">Select a product</option>'+ "<option value='"+value_new+"'>"+value_new+"</option>");
+              
+                      
+                  }
+
+                }  
+
+              });
+                 
+               });
+
+
+              });
+          
+          
+          
+          console.log(task_names2);
+          $('#cate-col-data').html(task_names2)
+         
+          
+        
+        
+  }); 
+
+
+    
+    
+      $('#search-with-data').on('change, input, keyup ', function() {
+      console.log( $('#select-product').val());
+//          return false;
+      var cate_value =  $('#select-category').val();
+      var collection_val = $('#select-product').val();
+      console.log('category Val: '+cate_value);
+      console.log('collection value: '+collection_val);
+  
+
+//           var task_names = data;
+
+          
+           var task_names1 = [];
+            var task_names2 = [];
+          
+           for(var i = 0, len = global_array.length; i < len; i++) {
+          $.each(global_array[i], function(i, item) {
+            if (item.items) {
+//               var brands =  item.items;
+//               brands.forEach(function (i) {
+//                 task_names1.push(i);              
+//               });
+                item.items.forEach(brands => { 
+              $.each(brands.metafields, function(key,value) {
+                //    console.log(brands.metafields[key]);
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+//                   console.log(value1);
+                  
+                  if(key1 == "lvl1" && value1 == 'lvl1_'+cate_value ){
+//                       console.log('test');
+                       console.log(brands.metafields[i].value);
+//                     console.log(brands);
+                   
+                      
+                      if($.inArray(brands, task_names1) != -1){ 
+                   
+//                     console.log('Matched');
+                      }
+                      else{
+//                       console.log('Not Matched');
+                         task_names1.push(brands); 
+                      }
+                  }
+
+                }  
+
+
+
+
+              });
+                 });
+                   
+
+            }
+
+         });  
+          
+           }
+          
+          
+          
+          console.log(task_names1);
+//           console.log(data test);
+          
+//            task_names2.push(collection_val);
+        function getContent(target) {
+    var value = $(target).val().replace(/\W/g, '')
+  $(target).val("")
+
+    return value
+}
+          
+                $.each(task_names1, function(i, item) {
+               
+               task_names1.forEach(brands => { 
+                 
+              $.each(brands.metafields, function(key,value) {
+                   
+
+                for (var i = 0; i < brands.metafields.length; i++) {
+//                 console.log(brands.metafields[i].key);
+//                        console.log(brands.metafields[i].key);
+                  var key1 = brands.metafields[i].key;
+                  var value1 = brands.metafields[i].value;
+                  
+                  
+                  if(value1 == collection_val ){
+                    
+                    
+                     if($.inArray(brands, task_names2) != -1){ 
+                   
+//                     console.log('Matched');
+                      }
+                      else{
+//                       console.log('Not Matched value push');
+                         task_names2.push(brands); 
+                        
+                      }
+                    
+                
+                     console.log(value1);
+//                       console.log('test');
+//                     console.log('Collections value:- '+brands.metafields[i].value);
+                    var value_new = brands.metafields[i].value;
+//                     console.log(brands);
+                   var option1 = "<option value='"+value_new+"'>"+value_new+"</option>"; 
+//                       alert(option1);
+                   
+//                        $('#select-product').append('<option value="Select a product">Select a product</option>'+ "<option value='"+value_new+"'>"+value_new+"</option>");
+              
+                      
+                  }
+
+                }  
+
+              });
+                 
+               });
+
+
+              });
+          
+          
+          
+          console.log(task_names2);
+          $('#cate-col-data').html(task_names2)
+          
+          
+          
+            var input = document.getElementById("search-with-data").value;
+
+
+           
+                
+                for (var i = 0; i < task_names2.length; i++) { 
+                  console.log(input);
+//                     console.log(task_names2[i].title);
+                  if(input){
+                  if(task_names2[i].title.includes(input)){ 
+
+                    console.log('Matched');
+                    console.log(task_names2[i]);
+                    var filtered_array = task_names2[i];
+                    
+                      $('#cate-col-data').append('<div class="filtered-data">Product Title <a href='+'/products/'+task_names2[i].urlName+'>'+task_names2[i].title + '</a> Description ' + task_names2[i].description+'</br></div>');
+                    
+                  }
+                 else if(task_names2[i].description.includes(input.toUpperCase())){ 
+
+                    console.log('Matched');
+                    console.log(task_names2[i]);
+                    var filtered_array = task_names2[i];
+                    
+                     $('#cate-col-data').append('<div class="filtered-data">Product Title <a href='+'/products/'+task_names2[i].urlName+'>'+task_names2[i].title + '</a> Description ' + task_names2[i].description+'</br></div>');
+                  
+                 }
+                  else{
+                    console.log('Not Matched');
+//                     $('#cate-col-data').html('No Data Found');
+                   
+                  }
+
+                  }
+
+
+                }
+
+           
+          
+          
+        
+               
+             });
+
+  
+    
+    
+    
+    console.log( "ready!" );
+    
+     setInterval(function () {
+
+      var usedNames = {}; 
+      $(".select_your_product select > option").each(function () {
+        if(usedNames[this.text]) {
+          $(this).remove();
+        } else {
+          usedNames[this.text] = this.value;
+        }
+      });   
+       var seen = {};
+       $('.filtered-data').each(function() {
+         var txt = $(this).text();
+         if (seen[txt])
+           $(this).remove();
+         else
+           seen[txt] = true;
+       });
+    $('select option[value="null"]').remove();
+      
+    }, 50);  
+       
+    
+
+  
+ });
+  
+  
+//   $('.search_btn').on('click', function(){
+// var search_value = $('.custom-search1').val();
+
+//  $.ajax({
+//      type: 'GET',
+// //      url: 'https://svc-2-usf.hotyon.com/search?q='+search_value+'&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+//      url : 'https://svc-2-usf.hotyon.com/search?q=&apiKey=edfccae2-10ea-4e44-a28e-d868fe41cba6',
+//      dataType: 'json',
+
+//       success: function(data) { 
+//         console.log(data);
+//         $('.response_search').append(data);
+        
+// //           var task_names = [];
+// //          data.each(function (key,value) {
+// //            task_names.push(i);              
+// //          });
+        
+// //         $('.response_search').html('test'+ task_names);
+// //          $.each(data, function(key,value) {
+// //          alert('New Array data:'+data.query);  
+           
+// //          });
+// //          $(data.items).each(function (key, value){
+// //            alert('New Array 2:'+data.items[key].title);
+// //          });
+     
+// //          $.each(data.items, function(key,value) {
+// //              console.log('New Array:'+value.id);
+// //            });
+      
+        
+        
+//       }
+     
+//     });
+// });
+</script>

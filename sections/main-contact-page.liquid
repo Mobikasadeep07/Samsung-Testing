@@ -1,0 +1,180 @@
+<div class="search-fridge-main" id="contact-page-main">
+  <h2 class="support-head"> {{ section.settings.title }} </h2>
+  
+  {% if section.settings.banner_img != blank  %}
+  <div class="find_part_banner">
+  <img src="{{ section.settings.banner_img | img_url : 'master' }}" alt="">
+  <h1> {{ section.settings.title1 }} </h1>    
+</div>
+  {% endif %}
+  
+  <div class="contact_icon_text">
+    <h2> {{ section.settings.title2 }} </h2>
+  
+    <div class="icons_text-wrapper">
+     {% for block in section.blocks %}
+      {% if forloop.index == 1 %}
+        <div class="item">
+          <div class="items-inner">
+            <a href="tel:8006274368">
+            <img src="{{ block.settings.banner_img | img_url : 'master' }}" alt="">
+              </a>
+            <span class="icons_content">{{ block.settings.image_sub_title }}</span>
+          </div>
+        </div>   
+      {% endif %}
+      {% if forloop.index == 2 %}
+        <div class="item">
+          <div class="items-inner">
+          
+            <img onclick="window.fcWidget.open();window.fcWidget.show();" src="{{ block.settings.banner_img | img_url : 'master' }}" alt="">
+
+            <span class="icons_content">{{ block.settings.image_sub_title }}</span>
+          </div>
+        </div>   
+      {% endif %}
+      
+       {% if forloop.index == 3 %}
+        <div class="item">
+          <div class="items-inner">
+            <a href="/pages/message-us">
+            <img  src="{{ block.settings.banner_img | img_url : 'master' }}" alt="">
+            </a>
+            <span class="icons_content">{{ block.settings.image_sub_title }}</span>
+          </div>
+        </div>   
+      {% endif %}
+      
+        {% endfor %} 
+    </div>
+  </div>
+  
+  <div class="contact_help">
+    <h2> {{ section.settings.title3 }} </h2>
+  <div class="help_desc">{{ section.settings.help_desc  }}</div>
+  <div class="part-type help_topics">
+   
+        
+          
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="Shipping">
+
+      <span class="tooltip-text">Shipping</span>
+    </label>	
+
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="Return & Exchange">
+
+      <span class="tooltip-text">Return & Exchange</span>
+    </label>	
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="Warranty">
+
+      <span class="tooltip-text">Warranty</span>
+    </label>	
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="Order Support">
+
+      <span class="tooltip-text">Order Support</span>
+    </label>	
+
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="Part Inquiry">
+
+      <span class="tooltip-text">Part Inquiry</span>
+    </label>	
+
+    <label class="texture-swatch">
+
+      <input type="radio" name="properties[part_type]" value="FAQ">
+
+      <span class="tooltip-text">FAQ</span>
+    </label>	
+
+      
+  </div>
+  </div>
+  
+  
+  
+</div> 
+
+{% schema %}
+  {
+    "name": "Contact Page",
+    "class" : "contact-page", 
+    "settings": [
+         {
+        "id": "title",
+        "type": "text",
+        "label": "Page Heading",
+       "default" : "Support"
+        },
+        {
+        "id": "banner_img",
+        "type": "image_picker",
+        "label": "Banner Image"
+        },
+        {
+        "id": "title1",
+        "type": "text",
+        "label": "Banner Image Text"
+        },
+         {
+        "id": "title2",
+        "type": "text",
+        "label": "Heading Contact",
+        "default" : "Contact"
+        },
+        {
+        "id": "title3",
+        "type": "text",
+        "label": "Heading Help",
+        "default" : "Help Topics"
+        },
+        {
+        "id": "help_desc",
+        "type": "richtext",
+        "label": "Help Description"
+        }
+
+
+     ],
+      "blocks": [
+      {
+        "type": "contact_icon_text",
+        "name": "Contact Icon",
+        "settings": [
+         
+        {
+        "id": "banner_img",
+        "type": "image_picker",
+        "label": "Icon Image"
+        },
+       
+        {
+        "id": "image_sub_title",
+        "type": "textarea",
+        "label": "Description"
+        } 
+        ]
+      }
+   ]
+
+
+  }
+{% endschema %}
+
+{% stylesheet %}
+.icons_text-wrapper .item img{
+cursor:pointer;
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
