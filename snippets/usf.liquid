@@ -9,5 +9,5 @@
 window._usfCustomerTags = {{ customer.tags | json }};
 window._usfCollectionId = {{ collection.id | json }};
 window._usfCollectionDefaultSort = {{ collection.default_sort_by | json }};
-</script>
+window.usf = { settings: {{ shop.metafields.usf.settings }} };</script>
 <script src="{{ 'usf-boot.js' | asset_url }}" async></script>
